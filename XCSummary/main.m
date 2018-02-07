@@ -38,9 +38,11 @@ int main(int argc, const char * argv[]) {
         NSArray *summaries = [parser testSummaries];
         
         BOOL showSuccess = CMSummaryValueExists(arguments, @"-show_success");
+        BOOL onlyFailures = CMSummaryValueExists(arguments, @"-only_failures");
         CMHTMLReportBuilder *builder = [[CMHTMLReportBuilder alloc] initWithAttachmentsPath:attachmentsPath
                                                                                 resultsPath:output.stringByExpandingTildeInPath
-                                                                           showSuccessTests:showSuccess];
+                                                                           showSuccessTests:showSuccess
+                                                                            onlyFailedTests:onlyFailures];
         [builder appendSummaries:summaries];
         [summaries enumerateObjectsUsingBlock:^(CMTestableSummary *summary, NSUInteger idx, BOOL * _Nonnull stop) {
             [builder appendTests:summary.tests indentation:10.0f];
