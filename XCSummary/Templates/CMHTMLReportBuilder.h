@@ -21,7 +21,8 @@
  */
 - (instancetype)initWithAttachmentsPath:(NSString *)path
                             resultsPath:(NSString *)resultsPath
-                       showSuccessTests:(BOOL)showSuccessTests;
+                       showSuccessTests:(BOOL)showSuccessTests
+                        onlyFailedTests:(BOOL)onlyFailedTests;
 
 /**
  Appends summaries info as a header

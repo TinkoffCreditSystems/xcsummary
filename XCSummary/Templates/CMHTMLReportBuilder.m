@@ -24,6 +24,7 @@
 @property (nonatomic, strong) NSMutableString *developerScreenshotsString;
 @property (nonatomic, strong) NSFileManager *fileManager;
 @property (nonatomic) BOOL showSuccessTests;
+@property (nonatomic) BOOL onlyFailedTests;
 
 @property (nonatomic, strong) NSDateComponentsFormatter *timeFormatter;
 
@@ -34,6 +35,7 @@
 - (instancetype)initWithAttachmentsPath:(NSString *)path
                             resultsPath:(NSString *)resultsPath
                        showSuccessTests:(BOOL)showSuccessTests
+                        onlyFailedTests:(BOOL)onlyFailedTests
 {
     self = [super init];
     if (self)
@@ -44,6 +46,7 @@
         _htmlResourcePath = [[resultsPath stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"resources"];
         _resultString = [NSMutableString new];
         _showSuccessTests = showSuccessTests;
+        _onlyFailedTests = onlyFailedTests;
         [self _prepareResourceFolder];
     }
     return self;
@@ -137,8 +140,17 @@
     NSString *templateFormat = testCase.status == CMTestStatusFailure ?
     [self _decodeTemplateWithName:TestCaseTemplateFailed] :
     [self _decodeTemplateWithName:TestCaseTemplate];
-    NSString *composedString = [NSString stringWithFormat:templateFormat, indentation, @"px", testCase.testName, testCase.testName, testCase.duration];
-    [self.resultString appendString:composedString];
+    NSString *composedString;
+    if (self.onlyFailedTests == YES) {
+        if (testCase.status == CMTestStatusFailure) {
+            composedString = [NSString stringWithFormat:templateFormat, indentation, @"px", testCase.testName, testCase.testName, testCase.duration];
+            [self.resultString appendString:composedString];
+        }
+    } else {
+        composedString = [NSString stringWithFormat:templateFormat, indentation, @"px", testCase.testName, testCase.testName, testCase.duration];
+        [self.resultString appendString:composedString];
+    }
+    
 }
 
 - (void)_appendActivities:(NSArray *)activities indentation:(CGFloat)indentation
