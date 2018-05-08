@@ -10,6 +10,7 @@
 #import "NSArrayAdditions.h"
 
 static NSString *kEventTitle = @"Synthesize event";
+static NSString *kAttachTitle = @"Added attachment";
 static NSString *kLogPrefix = @"Find: Elements matching predicate '\"log\"";
 static NSInteger kLogComponentIndex = 3;
 
@@ -40,7 +41,7 @@ static NSInteger kLogComponentIndex = 3;
 - (CMActivityType)typeForTitle:(NSString *)title
 {
     CMActivityType type = CMActivityTypeUnknown;
-    if ([title isEqualToString:kEventTitle])
+    if ([title isEqualToString:kEventTitle] || ([title containsString:kAttachTitle]))
     {
         type = CMActivityTypeEvent;
     }
